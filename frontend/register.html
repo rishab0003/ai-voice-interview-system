@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - AI Voice Interview System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <div class="page-wrapper bg-gradient">
+        <div class="container container-sm">
+            <div class="card animate-scale-in">
+                <!-- Header -->
+                <div class="text-center mb-2xl">
+                    <div class="navbar-brand" style="font-size: 2rem; margin-bottom: var(--spacing-sm);">🎤 AI Interview
+                    </div>
+                    <h2 style="margin-bottom: var(--spacing-sm);">Create Account</h2>
+                    <p class="text-secondary">Start your journey to interview success</p>
+                </div>
+
+                <!-- Registration Form -->
+                <form id="registerForm" onsubmit="register(event)">
+                    <!-- Full Name Input -->
+                    <div class="input-floating">
+                        <input type="text" id="full_name" class="form-input" placeholder=" " required minlength="2">
+                        <label for="full_name">Full Name</label>
+                    </div>
+
+                    <!-- Email Input -->
+                    <div class="input-floating">
+                        <input type="email" id="email" class="form-input" placeholder=" " required>
+                        <label for="email">Email Address</label>
+                    </div>
+
+                    <!-- Password Input -->
+                    <div class="input-floating">
+                        <input type="password" id="password" class="form-input" placeholder=" " required minlength="8"
+                            oninput="updatePasswordStrength()">
+                        <label for="password">Password</label>
+                        <button type="button" class="password-toggle" onclick="togglePassword('password')"
+                            aria-label="Toggle password visibility">
+                            👁️
+                        </button>
+                    </div>
+
+                    <!-- Password Strength Meter -->
+                    <div class="password-strength mb-lg">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strengthFill"></div>
+                        </div>
+                        <div class="strength-text" id="strengthText">Enter a password</div>
+                    </div>
+
+                    <!-- Confirm Password Input -->
+                    <div class="input-floating">
+                        <input type="password" id="confirm_password" class="form-input" placeholder=" " required
+                            minlength="8">
+                        <label for="confirm_password">Confirm Password</label>
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirm_password')"
+                            aria-label="Toggle password visibility">
+                            👁️
+                        </button>
+                    </div>
+
+                    <!-- Terms & Conditions -->
+                    <div class="mb-lg">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" required>
+                            <span>I agree to the <a href="#" class="text-primary">Terms & Conditions</a> and <a href="#"
+                                    class="text-primary">Privacy Policy</a></span>
+                        </label>
+                    </div>
+
+                    <!-- Register Button -->
+                    <button type="submit" class="btn btn-primary w-full" id="registerBtn">
+                        <span>Create Account</span>
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="divider mt-xl mb-xl">
+                    <span>or</span>
+                </div>
+
+                <!-- Social Register Buttons -->
+                <div class="flex gap-md mb-xl">
+                    <button class="btn btn-secondary flex-1" onclick="showToast('Google signup coming soon!', 'info')">
+                        <span>🔍 Google</span>
+                    </button>
+                    <button class="btn btn-secondary flex-1" onclick="showToast('GitHub signup coming soon!', 'info')">
+                        <span>⚡ GitHub</span>
+                    </button>
+                </div>
+
+                <!-- Login Link -->
+                <div class="text-center">
+                    <p class="text-secondary">
+                        Already have an account?
+                        <a href="index.html" class="text-primary font-semibold">Sign in</a>
+                    </p>
+                </div>
+
+                <!-- Back to Landing -->
+                <div class="text-center mt-md">
+                    <a href="landing.html" class="text-secondary" style="font-size: 0.875rem;">
+                        ← Back to home
+                    </a>
+                </div>
+            </div>
+
+            <!-- Dark Mode Toggle -->
+            <div class="text-center mt-lg">
+                <button class="btn btn-icon" onclick="toggleDarkMode()"
+                    style="background: rgba(255,255,255,0.1); color: white;">
+                    🌙
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/animations.js"></script>
+    <script src="js/auth.js"></script>
+
+    <style>
+        /* Registration Page Specific Styles */
+        .input-floating {
+            position: relative;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.25rem;
+            padding: 0.25rem;
+            opacity: 0.6;
+            transition: opacity var(--transition-fast);
+        }
+
+        .password-toggle:hover {
+            opacity: 1;
+        }
+
+        .password-strength {
+            margin-top: calc(-1 * var(--spacing-md));
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: var(--color-gray-200);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-base);
+            background: var(--color-gray-400);
+        }
+
+        .strength-fill.weak {
+            width: 20%;
+            background: var(--color-error);
+        }
+
+        .strength-fill.fair {
+            width: 40%;
+            background: var(--color-warning);
+        }
+
+        .strength-fill.good {
+            width: 70%;
+            background: var(--color-info);
+        }
+
+        .strength-fill.strong {
+            width: 100%;
+            background: var(--color-success);
+        }
+
+        .strength-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+            margin-top: 0.25rem;
+        }
+
+        .divider {
+            position: relative;
+            text-align: center;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: var(--color-gray-200);
+        }
+
+        .divider span {
+            position: relative;
+            background: var(--bg-card);
+            padding: 0 var(--spacing-md);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        #registerBtn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        #registerBtn.loading span::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+
+            0%,
+            20% {
+                content: '.';
+            }
+
+            40% {
+                content: '..';
+            }
+
+            60%,
+            100% {
+                content: '...';
+            }
+        }
+    </style>
+
+    <script>
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const button = event.target;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = '👁️‍🗨️';
+            } else {
+                input.type = 'password';
+                button.textContent = '👁️';
+            }
+        }
+
+        function updatePasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+
+            if (!password) {
+                strengthFill.className = 'strength-fill';
+                strengthText.textContent = 'Enter a password';
+                return;
+            }
+
+            const strength = calculatePasswordStrength(password);
+
+            // Remove all strength classes
+            strengthFill.className = 'strength-fill';
+
+            // Add appropriate class based on strength
+            if (strength.score <= 1) {
+                strengthFill.classList.add('weak');
+                strengthText.textContent = 'Weak password';
+                strengthText.style.color = 'var(--color-error)';
+            } else if (strength.score === 2) {
+                strengthFill.classList.add('fair');
+                strengthText.textContent = 'Fair password';
+                strengthText.style.color = 'var(--color-warning)';
+            } else if (strength.score === 3) {
+                strengthFill.classList.add('good');
+                strengthText.textContent = 'Good password';
+                strengthText.style.color = 'var(--color-info)';
+            } else {
+                strengthFill.classList.add('strong');
+                strengthText.textContent = 'Strong password';
+                strengthText.style.color = 'var(--color-success)';
+            }
+        }
+
+        // Override register function to add validation and loading state
+        const originalRegister = window.register;
+        window.register = function (event) {
+            if (event) event.preventDefault();
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            const email = document.getElementById('email').value;
+
+            // Validate email
+            if (!isValidEmail(email)) {
+                showToast('Please enter a valid email address', 'error');
+                return;
+            }
+
+            // Validate password match
+            if (password !== confirmPassword) {
+                showToast('Passwords do not match', 'error');
+                return;
+            }
+
+            // Check password strength
+            const strength = calculatePasswordStrength(password);
+            if (strength.score < 2) {
+                showToast('Please use a stronger password', 'warning');
+                return;
+            }
+
+            const btn = document.getElementById('registerBtn');
+            btn.classList.add('loading');
+
+            // Call original register function
+            if (originalRegister) {
+                originalRegister();
+            }
+        };
+    </script>
+</body>
+
+</html>

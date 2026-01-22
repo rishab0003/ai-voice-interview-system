@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Resume - AI Voice Interview System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <div class="navbar-brand">🎤 AI Interview</div>
+            <ul class="navbar-menu">
+                <li><a href="dashboard.html" class="navbar-link">Dashboard</a></li>
+                <li><a href="upload.html" class="navbar-link" style="color: var(--color-primary);">Upload Resume</a>
+                </li>
+                <li><a href="interview.html" class="navbar-link">Interview</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="upload-main">
+        <div class="container container-sm">
+            <div class="upload-container animate-fade-in-up">
+                <!-- Header -->
+                <div class="text-center mb-2xl">
+                    <h1>Upload Your Resume</h1>
+                    <p class="text-secondary">Upload your resume to get personalized interview questions tailored to
+                        your experience</p>
+                </div>
+
+                <!-- Upload Zone -->
+                <div class="upload-zone" id="uploadZone">
+                    <input type="file" id="resumeInput" accept=".pdf,.doc,.docx" hidden>
+                    <div class="upload-content">
+                        <div class="upload-icon">📄</div>
+                        <h3 class="upload-text">Drag & drop your resume here</h3>
+                        <p class="upload-hint">or click to browse files</p>
+                        <p class="upload-hint" style="margin-top: var(--spacing-sm);">Supported formats: PDF, DOC, DOCX
+                            (Max 5MB)</p>
+                        <button class="btn btn-primary mt-lg" onclick="document.getElementById('resumeInput').click()">
+                            Choose File
+                        </button>
+                    </div>
+                </div>
+
+                <!-- File Preview (Hidden initially) -->
+                <div class="file-preview-container" id="filePreviewContainer" style="display: none;">
+                    <div class="file-preview">
+                        <div class="file-icon">📄</div>
+                        <div class="file-info">
+                            <div class="file-name" id="fileName">resume.pdf</div>
+                            <div class="file-size" id="fileSize">2.5 MB</div>
+                        </div>
+                        <button class="btn btn-icon" onclick="removeFile()" title="Remove file">
+                            ✕
+                        </button>
+                    </div>
+
+                    <!-- Upload Progress -->
+                    <div class="upload-progress" id="uploadProgress" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">Uploading... 0%</div>
+                    </div>
+
+                    <!-- Resume Analysis Preview -->
+                    <div class="resume-analysis" id="resumeAnalysis" style="display: none;">
+                        <h3>Resume Analysis</h3>
+                        <div class="analysis-grid">
+                            <div class="analysis-card">
+                                <div class="analysis-icon">💼</div>
+                                <div class="analysis-label">Experience</div>
+                                <div class="analysis-value" id="experienceYears">3 years</div>
+                            </div>
+                            <div class="analysis-card">
+                                <div class="analysis-icon">🎯</div>
+                                <div class="analysis-label">Skills Detected</div>
+                                <div class="analysis-value" id="skillsCount">12</div>
+                            </div>
+                            <div class="analysis-card">
+                                <div class="analysis-icon">🏆</div>
+                                <div class="analysis-label">Key Strengths</div>
+                                <div class="analysis-value" id="strengthsCount">5</div>
+                            </div>
+                        </div>
+
+                        <div class="skills-preview mt-lg">
+                            <h4>Detected Skills</h4>
+                            <div class="skills-tags" id="skillsTags">
+                                <span class="badge badge-primary">JavaScript</span>
+                                <span class="badge badge-primary">React</span>
+                                <span class="badge badge-primary">Node.js</span>
+                                <span class="badge badge-primary">Python</span>
+                                <span class="badge badge-primary">SQL</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="upload-actions mt-xl">
+                        <button class="btn btn-secondary" onclick="location.href='dashboard.html'">
+                            ← Back to Dashboard
+                        </button>
+                        <button class="btn btn-primary" id="proceedBtn" onclick="proceedToInterview()"
+                            style="display: none;">
+                            Proceed to Interview →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/animations.js"></script>
+    <script src="js/upload.js"></script>
+
+    <style>
+        /* Upload Page Specific Styles */
+        body {
+            background: var(--bg-secondary);
+        }
+
+        .upload-main {
+            padding: var(--spacing-2xl) 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .upload-container {
+            background: var(--bg-card);
+            border-radius: var(--radius-2xl);
+            padding: var(--spacing-3xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .upload-zone {
+            border: 3px dashed var(--color-gray-300);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-3xl);
+            text-align: center;
+            transition: all var(--transition-base);
+            cursor: pointer;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.drag-over {
+            border-color: var(--color-primary);
+            background: rgba(99, 102, 241, 0.05);
+            transform: scale(1.02);
+        }
+
+        .upload-content {
+            pointer-events: none;
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-lg);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .upload-text {
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .upload-hint {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .file-preview-container {
+            margin-top: var(--spacing-2xl);
+        }
+
+        .file-preview {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .file-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            font-size: 1.125rem;
+        }
+
+        .file-size {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .upload-progress {
+            margin-top: var(--spacing-lg);
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: var(--spacing-sm);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .resume-analysis {
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-xl);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+        }
+
+        .resume-analysis h3 {
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .analysis-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .analysis-icon {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .analysis-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .analysis-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .skills-preview h4 {
+            font-size: 1rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        .skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .upload-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: space-between;
+        }
+
+        @media (max-width: 768px) {
+            .upload-container {
+                padding: var(--spacing-xl);
+            }
+
+            .upload-zone {
+                padding: var(--spacing-xl);
+            }
+
+            .upload-actions {
+                flex-direction: column;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script>
+        const uploadZone = document.getElementById('uploadZone');
+        const resumeInput = document.getElementById('resumeInput');
+        const filePreviewContainer = document.getElementById('filePreviewContainer');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const resumeAnalysis = document.getElementById('resumeAnalysis');
+        const proceedBtn = document.getElementById('proceedBtn');
+
+        // Click to upload
+        uploadZone.addEventListener('click', () => {
+            resumeInput.click();
+        });
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Highlight drop zone when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, () => {
+                uploadZone.classList.add('drag-over');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, () => {
+                uploadZone.classList.remove('drag-over');
+            }, false);
+        });
+
+        // Handle dropped files
+        uploadZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }, false);
+
+        // Handle selected files
+        resumeInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length === 0) return;
+
+            const file = files[0];
+
+            // Validate file type
+            const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!validTypes.includes(file.type)) {
+                showToast('Please upload a PDF or Word document', 'error');
+                return;
+            }
+
+            // Validate file size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('File size must be less than 5MB', 'error');
+                return;
+            }
+
+            // Show file preview
+            displayFilePreview(file);
+
+            // Simulate upload
+            simulateUpload(file);
+        }
+
+        function displayFilePreview(file) {
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+
+            uploadZone.style.display = 'none';
+            filePreviewContainer.style.display = 'block';
+        }
+
+        function simulateUpload(file) {
+            uploadProgress.style.display = 'block';
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `Uploading... ${progress}%`;
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        uploadProgress.style.display = 'none';
+                        showAnalysis();
+                    }, 500);
+                }
+            }, 100);
+        }
+
+        function showAnalysis() {
+            resumeAnalysis.style.display = 'block';
+            resumeAnalysis.classList.add('animate-fade-in-up');
+            proceedBtn.style.display = 'inline-flex';
+            showToast('Resume uploaded and analyzed successfully!', 'success');
+        }
+
+        function removeFile() {
+            uploadZone.style.display = 'block';
+            filePreviewContainer.style.display = 'none';
+            uploadProgress.style.display = 'none';
+            resumeAnalysis.style.display = 'none';
+            proceedBtn.style.display = 'none';
+            resumeInput.value = '';
+        }
+
+        function proceedToInterview() {
+            localStorage.setItem('resumeUploaded', 'true');
+            location.href = 'interview.html';
+        }
+    </script>
+</body>
+
+</html>

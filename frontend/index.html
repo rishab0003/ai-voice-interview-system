@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AI Voice Interview System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <div class="page-wrapper bg-gradient">
+        <div class="container container-sm">
+            <div class="card animate-scale-in">
+                <!-- Header -->
+                <div class="text-center mb-2xl">
+                    <div class="navbar-brand" style="font-size: 2rem; margin-bottom: var(--spacing-sm);">🎤 AI Interview
+                    </div>
+                    <h2 style="margin-bottom: var(--spacing-sm);">Welcome Back</h2>
+                    <p class="text-secondary">Sign in to continue your interview preparation</p>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" onsubmit="login(event)">
+                    <!-- Email Input -->
+                    <div class="input-floating">
+                        <input type="email" id="email" class="form-input" placeholder=" " required>
+                        <label for="email">Email Address</label>
+                    </div>
+
+                    <!-- Password Input -->
+                    <div class="input-floating">
+                        <input type="password" id="password" class="form-input" placeholder=" " required>
+                        <label for="password">Password</label>
+                        <button type="button" class="password-toggle" onclick="togglePassword('password')"
+                            aria-label="Toggle password visibility">
+                            👁️
+                        </button>
+                    </div>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex justify-between items-center mb-lg" style="margin-top: var(--spacing-md);">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="remember">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="text-primary" style="font-size: 0.875rem;">Forgot password?</a>
+                    </div>
+
+                    <!-- Login Button -->
+                    <button type="submit" class="btn btn-primary w-full" id="loginBtn">
+                        <span>Sign In</span>
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="divider mt-xl mb-xl">
+                    <span>or</span>
+                </div>
+
+                <!-- Social Login Buttons -->
+                <div class="flex gap-md mb-xl">
+                    <button class="btn btn-secondary flex-1" onclick="showToast('Google login coming soon!', 'info')">
+                        <span>🔍 Google</span>
+                    </button>
+                    <button class="btn btn-secondary flex-1" onclick="showToast('GitHub login coming soon!', 'info')">
+                        <span>⚡ GitHub</span>
+                    </button>
+                </div>
+
+                <!-- Register Link -->
+                <div class="text-center">
+                    <p class="text-secondary">
+                        Don't have an account?
+                        <a href="register.html" class="text-primary font-semibold">Create one</a>
+                    </p>
+                </div>
+
+                <!-- Back to Landing -->
+                <div class="text-center mt-md">
+                    <a href="landing.html" class="text-secondary" style="font-size: 0.875rem;">
+                        ← Back to home
+                    </a>
+                </div>
+            </div>
+
+            <!-- Dark Mode Toggle -->
+            <div class="text-center mt-lg">
+                <button class="btn btn-icon" onclick="toggleDarkMode()"
+                    style="background: rgba(255,255,255,0.1); color: white;">
+                    🌙
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/animations.js"></script>
+    <script src="js/auth.js"></script>
+
+    <style>
+        /* Login Page Specific Styles */
+        .input-floating {
+            position: relative;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.25rem;
+            padding: 0.25rem;
+            opacity: 0.6;
+            transition: opacity var(--transition-fast);
+        }
+
+        .password-toggle:hover {
+            opacity: 1;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .divider {
+            position: relative;
+            text-align: center;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: var(--color-gray-200);
+        }
+
+        .divider span {
+            position: relative;
+            background: var(--bg-card);
+            padding: 0 var(--spacing-md);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        #loginBtn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        #loginBtn.loading span::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+
+            0%,
+            20% {
+                content: '.';
+            }
+
+            40% {
+                content: '..';
+            }
+
+            60%,
+            100% {
+                content: '...';
+            }
+        }
+    </style>
+
+    <script>
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const button = event.target;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = '👁️‍🗨️';
+            } else {
+                input.type = 'password';
+                button.textContent = '👁️';
+            }
+        }
+
+        // Override login function to add loading state
+        const originalLogin = window.login;
+        window.login = function (event) {
+            if (event) event.preventDefault();
+
+            const btn = document.getElementById('loginBtn');
+            btn.classList.add('loading');
+
+            // Call original login function
+            if (originalLogin) {
+                originalLogin();
+            }
+        };
+    </script>
+</body>
+
+</html>

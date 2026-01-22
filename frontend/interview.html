@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview - AI Voice Interview System</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+  <!-- Interview Container -->
+  <div class="interview-container">
+    <!-- Header -->
+    <div class="interview-header">
+      <div class="container">
+        <div class="header-content">
+          <div class="navbar-brand">🎤 AI Interview</div>
+          <div class="interview-progress-info">
+            <span class="progress-text">Question <span id="currentQuestion">1</span> of <span
+                id="totalQuestions">10</span></span>
+            <div class="timer" id="timer">
+              <span class="timer-icon">⏱️</span>
+              <span id="timerDisplay">05:00</span>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="exitInterview()">Exit</button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="question-progress-bar">
+          <div class="question-progress-fill" id="questionProgressFill" style="width: 10%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Interview Area -->
+    <main class="interview-main">
+      <div class="container">
+        <div class="interview-content animate-fade-in-up">
+          <!-- Question Card -->
+          <div class="question-card">
+            <div class="question-category">
+              <span class="badge badge-primary" id="questionCategory">Technical</span>
+            </div>
+            <h2 class="question-text" id="questionText">
+              Explain the difference between SQL and NoSQL databases. When would you use each?
+            </h2>
+          </div>
+
+          <!-- Voice Recording Section -->
+          <div class="recording-section">
+            <div class="recording-status" id="recordingStatus">
+              <div class="status-indicator">
+                <div class="recording-indicator" id="recordingIndicator" style="display: none;"></div>
+                <span class="status-text" id="statusText">Click to start recording</span>
+              </div>
+            </div>
+
+            <!-- Waveform Visualization -->
+            <div class="waveform-container" id="waveformContainer" style="display: none;">
+              <div class="waveform">
+                <div class="waveform-bar" style="height: 20px;"></div>
+                <div class="waveform-bar" style="height: 35px;"></div>
+                <div class="waveform-bar" style="height: 25px;"></div>
+                <div class="waveform-bar" style="height: 40px;"></div>
+                <div class="waveform-bar" style="height: 30px;"></div>
+                <div class="waveform-bar" style="height: 25px;"></div>
+                <div class="waveform-bar" style="height: 35px;"></div>
+                <div class="waveform-bar" style="height: 20px;"></div>
+                <div class="waveform-bar" style="height: 30px;"></div>
+                <div class="waveform-bar" style="height: 40px;"></div>
+                <div class="waveform-bar" style="height: 25px;"></div>
+                <div class="waveform-bar" style="height: 35px;"></div>
+              </div>
+            </div>
+
+            <!-- Record Button -->
+            <div class="record-button-container">
+              <button class="record-button" id="recordButton" onclick="toggleRecording()">
+                <span class="record-icon">🎤</span>
+              </button>
+              <p class="record-hint" id="recordHint">Click to record your answer</p>
+            </div>
+          </div>
+
+          <!-- Text Answer Option -->
+          <div class="text-answer-section">
+            <div class="divider mt-xl mb-xl">
+              <span>or type your answer</span>
+            </div>
+
+            <textarea id="textAnswer" class="form-textarea" rows="6" placeholder="Type your answer here..."></textarea>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="interview-navigation">
+            <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>
+              ← Previous
+            </button>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">
+              Next Question →
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/animations.js"></script>
+  <script src="js/interview.js"></script>
+
+  <style>
+    /* Interview Page Specific Styles */
+    body {
+      background: var(--bg-primary);
+      overflow-x: hidden;
+    }
+
+    .interview-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .interview-header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--color-gray-200);
+      padding: var(--spacing-lg) 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .interview-progress-info {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xl);
+    }
+
+    .progress-text {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .timer {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-sm) var(--spacing-md);
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .timer-icon {
+      font-size: 1.25rem;
+    }
+
+    .question-progress-bar {
+      height: 4px;
+      background: var(--color-gray-200);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .question-progress-fill {
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: width var(--transition-base);
+    }
+
+    .interview-main {
+      flex: 1;
+      padding: var(--spacing-3xl) 0;
+    }
+
+    .interview-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .question-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-3xl);
+      box-shadow: var(--shadow-lg);
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .question-category {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .question-text {
+      font-size: 1.75rem;
+      line-height: 1.4;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .recording-section {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-3xl);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--spacing-xl);
+      text-align: center;
+    }
+
+    .recording-status {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-md);
+    }
+
+    .status-text {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .waveform-container {
+      margin-bottom: var(--spacing-xl);
+      display: flex;
+      justify-content: center;
+    }
+
+    .record-button-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+
+    .record-button {
+      width: 100px;
+      height: 100px;
+      border-radius: var(--radius-full);
+      background: var(--gradient-primary);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      transition: all var(--transition-base);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .record-button:hover {
+      transform: scale(1.1);
+      box-shadow: var(--shadow-2xl), var(--shadow-glow);
+    }
+
+    .record-button:active {
+      transform: scale(0.95);
+    }
+
+    .record-button.recording {
+      background: var(--color-error);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .record-hint {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .text-answer-section {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .interview-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--spacing-md);
+    }
+
+    .divider {
+      position: relative;
+      text-align: center;
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 1px;
+      background: var(--color-gray-200);
+    }
+
+    .divider span {
+      position: relative;
+      background: var(--bg-card);
+      padding: 0 var(--spacing-md);
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    @media (max-width: 768px) {
+      .interview-progress-info {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        align-items: flex-end;
+      }
+
+      .question-card {
+        padding: var(--spacing-xl);
+      }
+
+      .question-text {
+        font-size: 1.25rem;
+      }
+
+      .recording-section {
+        padding: var(--spacing-xl);
+      }
+
+      .record-button {
+        width: 80px;
+        height: 80px;
+        font-size: 2.5rem;
+      }
+
+      .interview-navigation {
+        flex-direction: column-reverse;
+      }
+    }
+  </style>
+
+  <script>
+    let currentQuestionIndex = 0;
+    let totalQuestions = 10;
+    let isRecording = false;
+    let timerInterval;
+    let timeRemaining = 300; // 5 minutes in seconds
+
+    const questions = [
+      { category: 'Technical', text: 'Explain the difference between SQL and NoSQL databases. When would you use each?' },
+      { category: 'Problem Solving', text: 'Describe a challenging project you worked on and how you overcame obstacles.' },
+      { category: 'Behavioral', text: 'Tell me about a time when you had to work with a difficult team member.' },
+      { category: 'Technical', text: 'What is your experience with cloud computing platforms like AWS or Azure?' },
+      { category: 'Leadership', text: 'Describe your leadership style and give an example of when you led a team.' },
+      { category: 'Technical', text: 'Explain the concept of RESTful APIs and how you have used them.' },
+      { category: 'Communication', text: 'How do you explain technical concepts to non-technical stakeholders?' },
+      { category: 'Problem Solving', text: 'Walk me through your approach to debugging a complex issue.' },
+      { category: 'Behavioral', text: 'What motivates you in your work and how do you stay productive?' },
+      { category: 'Future Goals', text: 'Where do you see yourself in 5 years and how does this role fit your goals?' }
+    ];
+
+    function updateQuestion() {
+      const question = questions[currentQuestionIndex];
+      document.getElementById('questionCategory').textContent = question.category;
+      document.getElementById('questionText').textContent = question.text;
+      document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+
+      // Update progress bar
+      const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+      document.getElementById('questionProgressFill').style.width = progress + '%';
+
+      // Update navigation buttons
+      document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+      document.getElementById('nextBtn').textContent = currentQuestionIndex === totalQuestions - 1 ? 'Finish Interview →' : 'Next Question →';
+
+      // Clear previous answer
+      document.getElementById('textAnswer').value = '';
+
+      // Reset recording
+      if (isRecording) {
+        toggleRecording();
+      }
+    }
+
+    function nextQuestion() {
+      if (currentQuestionIndex < totalQuestions - 1) {
+        currentQuestionIndex++;
+        updateQuestion();
+      } else {
+        finishInterview();
+      }
+    }
+
+    function previousQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        updateQuestion();
+      }
+    }
+
+    function toggleRecording() {
+      isRecording = !isRecording;
+      const recordButton = document.getElementById('recordButton');
+      const recordHint = document.getElementById('recordHint');
+      const statusText = document.getElementById('statusText');
+      const recordingIndicator = document.getElementById('recordingIndicator');
+      const waveformContainer = document.getElementById('waveformContainer');
+
+      if (isRecording) {
+        recordButton.classList.add('recording');
+        recordHint.textContent = 'Recording... Click to stop';
+        statusText.textContent = 'Recording your answer';
+        recordingIndicator.style.display = 'block';
+        waveformContainer.style.display = 'flex';
+      } else {
+        recordButton.classList.remove('recording');
+        recordHint.textContent = 'Click to record your answer';
+        statusText.textContent = 'Click to start recording';
+        recordingIndicator.style.display = 'none';
+        waveformContainer.style.display = 'none';
+      }
+    }
+
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        document.getElementById('timerDisplay').textContent =
+          `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          showToast('Time is up!', 'warning');
+        }
+      }, 1000);
+    }
+
+    function exitInterview() {
+      if (confirm('Are you sure you want to exit the interview? Your progress will be lost.')) {
+        location.href = 'dashboard.html';
+      }
+    }
+
+    function finishInterview() {
+      clearInterval(timerInterval);
+      showToast('Interview completed! Redirecting to results...', 'success');
+      setTimeout(() => {
+        location.href = 'result.html';
+      }, 1500);
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', function () {
+      updateQuestion();
+      startTimer();
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Results - AI Voice Interview System</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+  <!-- Navigation Header -->
+  <nav class="navbar">
+    <div class="container navbar-container">
+      <div class="navbar-brand">🎤 AI Interview</div>
+      <ul class="navbar-menu">
+        <li><a href="dashboard.html" class="navbar-link">Dashboard</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="results-main">
+    <div class="container">
+      <!-- Success Header -->
+      <div class="results-header text-center animate-fade-in-up">
+        <div class="success-icon">🎉</div>
+        <h1>Interview Complete!</h1>
+        <p class="text-secondary">Great job! Here's how you performed</p>
+      </div>
+
+      <!-- Overall Score -->
+      <section class="score-section animate-fade-in-up stagger-1">
+        <div class="score-card">
+          <h2>Overall Score</h2>
+          <div class="circular-score">
+            <svg width="200" height="200" viewBox="0 0 200 200">
+              <defs>
+                <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <circle cx="100" cy="100" r="90" fill="none" stroke="#e5e7eb" stroke-width="12" />
+              <circle cx="100" cy="100" r="90" fill="none" stroke="url(#scoreGradient)" stroke-width="12"
+                stroke-dasharray="565" stroke-dashoffset="113" stroke-linecap="round" transform="rotate(-90 100 100)"
+                class="score-circle" />
+            </svg>
+            <div class="score-value">8.5<span>/10</span></div>
+          </div>
+          <p class="score-label">Excellent Performance!</p>
+        </div>
+      </section>
+
+      <!-- Performance Breakdown -->
+      <section class="breakdown-section animate-fade-in-up stagger-2">
+        <h2 class="section-heading">Performance Breakdown</h2>
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <div class="breakdown-header">
+              <span class="breakdown-icon">💻</span>
+              <h3>Technical Knowledge</h3>
+            </div>
+            <div class="breakdown-score">
+              <div class="score-bar">
+                <div class="score-bar-fill" style="width: 90%; background: linear-gradient(90deg, #667eea, #764ba2);">
+                </div>
+              </div>
+              <span class="score-number">9.0/10</span>
+            </div>
+          </div>
+
+          <div class="breakdown-card">
+            <div class="breakdown-header">
+              <span class="breakdown-icon">💬</span>
+              <h3>Communication Skills</h3>
+            </div>
+            <div class="breakdown-score">
+              <div class="score-bar">
+                <div class="score-bar-fill" style="width: 85%; background: linear-gradient(90deg, #f093fb, #f5576c);">
+                </div>
+              </div>
+              <span class="score-number">8.5/10</span>
+            </div>
+          </div>
+
+          <div class="breakdown-card">
+            <div class="breakdown-header">
+              <span class="breakdown-icon">🧩</span>
+              <h3>Problem Solving</h3>
+            </div>
+            <div class="breakdown-score">
+              <div class="score-bar">
+                <div class="score-bar-fill" style="width: 80%; background: linear-gradient(90deg, #4facfe, #00f2fe);">
+                </div>
+              </div>
+              <span class="score-number">8.0/10</span>
+            </div>
+          </div>
+
+          <div class="breakdown-card">
+            <div class="breakdown-header">
+              <span class="breakdown-icon">🎯</span>
+              <h3>Confidence</h3>
+            </div>
+            <div class="breakdown-score">
+              <div class="score-bar">
+                <div class="score-bar-fill" style="width: 85%; background: linear-gradient(90deg, #43e97b, #38f9d7);">
+                </div>
+              </div>
+              <span class="score-number">8.5/10</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skill Radar Chart -->
+      <section class="radar-section animate-fade-in-up stagger-3">
+        <h2 class="section-heading">Skills Assessment</h2>
+        <div class="card">
+          <div class="radar-container">
+            <canvas id="radarChart" width="400" height="400"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Detailed Feedback -->
+      <section class="feedback-section animate-fade-in-up stagger-4">
+        <h2 class="section-heading">Detailed Feedback</h2>
+
+        <div class="feedback-cards">
+          <div class="feedback-card strengths">
+            <div class="feedback-header">
+              <span class="feedback-icon">✨</span>
+              <h3>Strengths</h3>
+            </div>
+            <ul class="feedback-list">
+              <li>Excellent technical knowledge of databases and SQL/NoSQL concepts</li>
+              <li>Clear and concise communication style</li>
+              <li>Strong problem-solving approach with structured thinking</li>
+              <li>Good use of real-world examples to illustrate points</li>
+            </ul>
+          </div>
+
+          <div class="feedback-card improvements">
+            <div class="feedback-header">
+              <span class="feedback-icon">📈</span>
+              <h3>Areas for Improvement</h3>
+            </div>
+            <ul class="feedback-list">
+              <li>Consider providing more specific metrics when discussing project outcomes</li>
+              <li>Could elaborate more on leadership experiences</li>
+              <li>Practice concise answers for behavioral questions</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Question-by-Question Review -->
+      <section class="review-section animate-fade-in-up stagger-5">
+        <h2 class="section-heading">Question Review</h2>
+
+        <div class="review-accordion">
+          <div class="review-item">
+            <div class="review-question" onclick="toggleReview(0)">
+              <div class="review-info">
+                <span class="question-number">Q1</span>
+                <span class="question-title">SQL vs NoSQL Databases</span>
+              </div>
+              <span class="review-score badge-success">9.0/10</span>
+            </div>
+            <div class="review-answer" id="review-0">
+              <p class="answer-feedback"><strong>AI Feedback:</strong> Excellent answer! You clearly explained the key
+                differences and provided appropriate use cases for each type of database. Your examples were relevant
+                and demonstrated deep understanding.</p>
+            </div>
+          </div>
+
+          <div class="review-item">
+            <div class="review-question" onclick="toggleReview(1)">
+              <div class="review-info">
+                <span class="question-number">Q2</span>
+                <span class="question-title">Challenging Project Experience</span>
+              </div>
+              <span class="review-score badge-success">8.5/10</span>
+            </div>
+            <div class="review-answer" id="review-1">
+              <p class="answer-feedback"><strong>AI Feedback:</strong> Good response with a clear STAR format. You could
+                strengthen this by adding more specific metrics about the project's impact.</p>
+            </div>
+          </div>
+
+          <div class="review-item">
+            <div class="review-question" onclick="toggleReview(2)">
+              <div class="review-info">
+                <span class="question-number">Q3</span>
+                <span class="question-title">Working with Difficult Team Members</span>
+              </div>
+              <span class="review-score badge-success">8.0/10</span>
+            </div>
+            <div class="review-answer" id="review-3">
+              <p class="answer-feedback"><strong>AI Feedback:</strong> Solid answer demonstrating emotional intelligence
+                and conflict resolution skills. Consider emphasizing the positive outcome more clearly.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action Buttons -->
+      <section class="actions-section animate-fade-in-up stagger-6">
+        <div class="results-actions">
+          <button class="btn btn-secondary" onclick="location.href='interview.html'">
+            🔄 Retake Interview
+          </button>
+          <button class="btn btn-outline" onclick="showToast('Download feature coming soon!', 'info')">
+            📥 Download Report
+          </button>
+          <button class="btn btn-outline" onclick="showToast('Share feature coming soon!', 'info')">
+            📤 Share Results
+          </button>
+          <button class="btn btn-primary" onclick="location.href='dashboard.html'">
+            🏠 Back to Dashboard
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/animations.js"></script>
+
+  <style>
+    /* Results Page Specific Styles */
+    body {
+      background: var(--bg-secondary);
+    }
+
+    .results-main {
+      padding: var(--spacing-2xl) 0;
+      min-height: calc(100vh - 80px);
+    }
+
+    .results-header {
+      margin-bottom: var(--spacing-3xl);
+    }
+
+    .success-icon {
+      font-size: 5rem;
+      margin-bottom: var(--spacing-lg);
+      animation: bounceIn 0.6s ease-out;
+    }
+
+    .results-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .score-section {
+      margin-bottom: var(--spacing-3xl);
+    }
+
+    .score-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-2xl);
+      padding: var(--spacing-3xl);
+      box-shadow: var(--shadow-xl);
+      text-align: center;
+    }
+
+    .score-card h2 {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .circular-score {
+      position: relative;
+      display: inline-block;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .score-circle {
+      animation: drawCircle 1.5s ease-out forwards;
+    }
+
+    @keyframes drawCircle {
+      from {
+        stroke-dashoffset: 565;
+      }
+
+      to {
+        stroke-dashoffset: 113;
+      }
+    }
+
+    .score-value {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      font-weight: 800;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .score-value span {
+      font-size: 1.5rem;
+      color: var(--text-secondary);
+      -webkit-text-fill-color: var(--text-secondary);
+    }
+
+    .score-label {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-success);
+      margin: 0;
+    }
+
+    .breakdown-section {
+      margin-bottom: var(--spacing-3xl);
+    }
+
+    .section-heading {
+      font-size: 1.75rem;
+      margin-bottom: var(--spacing-xl);
+      color: var(--text-primary);
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .breakdown-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-md);
+    }
+
+    .breakdown-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .breakdown-icon {
+      font-size: 2rem;
+    }
+
+    .breakdown-header h3 {
+      font-size: 1.125rem;
+      margin: 0;
+    }
+
+    .breakdown-score {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+
+    .score-bar {
+      flex: 1;
+      height: 12px;
+      background: var(--color-gray-200);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: var(--radius-full);
+      transition: width 1s ease-out;
+    }
+
+    .score-number {
+      font-weight: 700;
+      color: var(--text-primary);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    .radar-section {
+      margin-bottom: var(--spacing-3xl);
+    }
+
+    .radar-container {
+      padding: var(--spacing-2xl);
+      display: flex;
+      justify-content: center;
+    }
+
+    .feedback-section {
+      margin-bottom: var(--spacing-3xl);
+    }
+
+    .feedback-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .feedback-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-md);
+    }
+
+    .feedback-card.strengths {
+      border-left: 4px solid var(--color-success);
+    }
+
+    .feedback-card.improvements {
+      border-left: 4px solid var(--color-warning);
+    }
+
+    .feedback-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .feedback-icon {
+      font-size: 1.5rem;
+    }
+
+    .feedback-header h3 {
+      margin: 0;
+    }
+
+    .feedback-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .feedback-list li {
+      padding: var(--spacing-sm) 0;
+      padding-left: var(--spacing-lg);
+      position: relative;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .feedback-list li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--color-primary);
+      font-weight: 700;
+    }
+
+    .review-section {
+      margin-bottom: var(--spacing-3xl);
+    }
+
+    .review-accordion {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .review-item {
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+
+    .review-item:last-child {
+      border-bottom: none;
+    }
+
+    .review-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-lg);
+      cursor: pointer;
+      transition: background var(--transition-fast);
+    }
+
+    .review-question:hover {
+      background: var(--bg-secondary);
+    }
+
+    .review-info {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+
+    .question-number {
+      width: 40px;
+      height: 40px;
+      background: var(--gradient-primary);
+      color: var(--text-inverse);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .question-title {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .review-score {
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+    }
+
+    .review-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--transition-base);
+    }
+
+    .review-answer.active {
+      max-height: 500px;
+      padding: var(--spacing-lg);
+      background: var(--bg-secondary);
+    }
+
+    .answer-feedback {
+      margin: 0;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .actions-section {
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .results-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      justify-content: center;
+    }
+
+    @media (max-width: 768px) {
+      .results-header h1 {
+        font-size: 2rem;
+      }
+
+      .breakdown-grid,
+      .feedback-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .results-actions {
+        flex-direction: column;
+      }
+
+      .results-actions .btn {
+        width: 100%;
+      }
+    }
+  </style>
+
+  <script>
+    function toggleReview(index) {
+      const answer = document.getElementById(`review-${index}`);
+      answer.classList.toggle('active');
+    }
+
+    // Draw radar chart
+    window.addEventListener('DOMContentLoaded', function () {
+      drawRadarChart();
+    });
+
+    function drawRadarChart() {
+      const canvas = document.getElementById('radarChart');
+      const ctx = canvas.getContext('2d');
+
+      const centerX = 200;
+      const centerY = 200;
+      const radius = 150;
+
+      const skills = [
+        { name: 'Technical', score: 9.0 },
+        { name: 'Communication', score: 8.5 },
+        { name: 'Problem Solving', score: 8.0 },
+        { name: 'Leadership', score: 7.5 },
+        { name: 'Creativity', score: 8.0 },
+        { name: 'Teamwork', score: 9.0 }
+      ];
+
+      const angleStep = (Math.PI * 2) / skills.length;
+
+      // Draw background circles
+      ctx.strokeStyle = '#e5e7eb';
+      ctx.lineWidth = 1;
+      for (let i = 1; i <= 5; i++) {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, (radius / 5) * i, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Draw axes
+      ctx.strokeStyle = '#e5e7eb';
+      ctx.lineWidth = 1;
+      skills.forEach((skill, index) => {
+        const angle = angleStep * index - Math.PI / 2;
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
+
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+
+        // Draw labels
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '14px Inter';
+        ctx.textAlign = 'center';
+        const labelX = centerX + Math.cos(angle) * (radius + 30);
+        const labelY = centerY + Math.sin(angle) * (radius + 30);
+        ctx.fillText(skill.name, labelX, labelY);
+      });
+
+      // Draw data polygon
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(102, 126, 234, 0.2)';
+      ctx.strokeStyle = '#667eea';
+      ctx.lineWidth = 3;
+
+      skills.forEach((skill, index) => {
+        const angle = angleStep * index - Math.PI / 2;
+        const distance = (skill.score / 10) * radius;
+        const x = centerX + Math.cos(angle) * distance;
+        const y = centerY + Math.sin(angle) * distance;
+
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Draw points
+      skills.forEach((skill, index) => {
+        const angle = angleStep * index - Math.PI / 2;
+        const distance = (skill.score / 10) * radius;
+        const x = centerX + Math.cos(angle) * distance;
+        const y = centerY + Math.sin(angle) * distance;
+
+        ctx.fillStyle = '#667eea';
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+  </script>
+</body>
+
+</html>
